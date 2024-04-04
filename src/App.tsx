@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import axios from "axios";
-import toast from "react-hot-toast";
 import {
   Login,
   Dashboard,
@@ -24,18 +23,6 @@ import {
 
 function App() {
   axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-  axios.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      if (error.response.status === 401) {
-        toast.error(error.response.data.message || error.message);
-        window.location.href = "/login";
-      }
-      return Promise.reject(error);
-    }
-  );
   const router = createBrowserRouter([
     {
       path: "/login",

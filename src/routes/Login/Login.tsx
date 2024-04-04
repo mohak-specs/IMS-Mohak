@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import Loader from "../../components/Loader";
 import CopyRight from "../../components/Copyright";
+import useUserStore from "../../store/useUserStore";
 import "./Login.css";
 
 const { Title, Text } = Typography;
@@ -15,7 +16,9 @@ type FormValues = {
 };
 
 const Login = () => {
+  const [messageApi, contextHolder] = message.useMessage();
   const { token, setToken } = useAuth();
+  const { setUser } = useUserStore();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -28,13 +31,14 @@ const Login = () => {
       const res = await axios.post("auth/login", values);
       form.resetFields();
       setToken(res.data.accessToken);
+      setUser(res.data.user);
       navigate(`${location.state?.callbackPath || "/"}`, { replace: true });
-      message.success(`Welcome! ${res.data.user.name}`, 2);
+      messageApi.success(`Welcome! ${res.data.user.name}`, 2);
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        message.error(err.response?.data.message || err.message);
+        messageApi.error(err.response?.data.message || err.message);
       } else {
-        message.error("Something went wrong");
+        messageApi.error("Something went wrong");
       }
     } finally {
       setIsLoading(false);
@@ -49,6 +53,7 @@ const Login = () => {
 
   return (
     <div className="container">
+      {contextHolder}
       <Loader isLoading={isLoading} />
       <Card className="card">
         <Title level={3}>Login</Title>
@@ -59,7 +64,6 @@ const Login = () => {
           onFinish={handleSubmit}
           className="form"
           initialValues={{ email: "", password: "" }}
-          autoComplete="off"
         >
           <Form.Item
             label="Email Address"
@@ -70,7 +74,12 @@ const Login = () => {
             ]}
             className="form-item"
           >
-            <Input type="email" className="input" placeholder="Email Address" />
+            <Input
+              type="email"
+              className="input"
+              placeholder="Email Address"
+              autoComplete="username"
+            />
           </Form.Item>
           <Form.Item
             label="Password"
@@ -84,6 +93,7 @@ const Login = () => {
               }
               className="input"
               placeholder="Password"
+              autoComplete="current-password"
             />
           </Form.Item>
           <Form.Item className="form-item">

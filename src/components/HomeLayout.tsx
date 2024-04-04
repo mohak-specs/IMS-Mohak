@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Layout, theme, Typography } from "antd";
 import CopyRight from "./Copyright";
-import NavLinks from "./navLinks";
+import SiderMenu from "./SiderMenu";
 import { useMediaQuery } from "react-responsive";
-const { Header, Content, Footer, Sider } = Layout;
+import Navbar from "./Navbar";
+const { Content, Footer, Sider } = Layout;
 
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   const {
-    token: { colorBgContainer, borderRadiusLG },
+    token: { colorBgContainer, borderRadiusLG, boxShadow },
   } = theme.useToken();
   const isMobile = useMediaQuery({ query: "(max-width: 992px)" });
-  const [collapsed, setCollapsed] = useState<boolean>(false);
+  const [collapsed, setCollapsed] = useState<boolean>(false || isMobile);
 
   const toggleCollapsed = () => {
     setCollapsed((prev) => !prev);
@@ -33,7 +34,7 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
         style={{
           position: "fixed",
           zIndex: 2,
-          height: "100vh",
+          height: "100%",
           boxShadow: collapsed ? "none" : "4px 0 4px rgba(0, 0, 0, 0.1)",
         }}
         theme="light"
@@ -45,22 +46,10 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
             </Typography.Title>
           </Link>
         </div>
-        <NavLinks onMenuItemClick={handleMenuItemClick} />
+        <SiderMenu onMenuItemClick={handleMenuItemClick} />
       </Sider>
       <Layout style={{ marginLeft: collapsed ? 0 : isMobile ? 0 : 200 }}>
-        <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-            height: isMobile ? 48 : 64,
-            position: "sticky",
-            top: 0,
-            zIndex: 1,
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-          }}
-        />
+        <Navbar isMobile={isMobile} colorBgContainer={colorBgContainer} />
         <Content style={{ margin: "24px 16px 0px" }}>
           <div
             style={{
@@ -68,6 +57,7 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
               minHeight: 360,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
+              boxShadow,
             }}
           >
             {children}
