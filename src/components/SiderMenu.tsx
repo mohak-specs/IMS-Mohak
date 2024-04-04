@@ -1,5 +1,5 @@
 import { useLocation, Link } from "react-router-dom";
-import { FaSuitcase, FaMoneyBill, FaRegUser, FaHome } from "react-icons/fa";
+import { FaSuitcase, FaMoneyBill, FaUser, FaHome } from "react-icons/fa";
 import { GiTalk } from "react-icons/gi";
 import { RiProfileLine } from "react-icons/ri";
 import { Button, Menu } from "antd";
@@ -58,7 +58,7 @@ const items: MenuItem[] = [
   },
   {
     groupName: "Members",
-    icon: <FaRegUser />,
+    icon: <FaUser />,
     subItems: [
       {
         key: "6",
