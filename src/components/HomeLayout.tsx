@@ -5,16 +5,12 @@ import CopyRight from "./Copyright";
 import SiderMenu from "./SiderMenu";
 import { useMediaQuery } from "react-responsive";
 import Navbar from "./Navbar";
-import useLoadingStore from "../store/useLoadingStore";
-import { useShallow } from "zustand/react/shallow";
-import ContentSkeleton from "./ContentSkeleton";
 const { Content, Footer, Sider } = Layout;
 
 const HomeLayout = ({ children }: { children: React.ReactNode }) => {
   const {
     token: { colorBgContainer, borderRadiusLG, boxShadow },
   } = theme.useToken();
-  const isLoading = useLoadingStore(useShallow((state) => state.isLoading));
   const isMobile = useMediaQuery({ query: "(max-width: 992px)" });
   const [collapsed, setCollapsed] = useState<boolean>(false || isMobile);
 
@@ -64,7 +60,7 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
               boxShadow,
             }}
           >
-            {isLoading ? <ContentSkeleton /> : children}
+            {children}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>

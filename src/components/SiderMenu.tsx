@@ -3,7 +3,7 @@ import { FaSuitcase, FaMoneyBill, FaUser, FaHome } from "react-icons/fa";
 import { GiTalk } from "react-icons/gi";
 import { RiProfileLine } from "react-icons/ri";
 import { Button, Menu } from "antd";
-import LogoutButton from "./LoginButton";
+import LogoutButton from "./LogoutButton";
 
 type MenuItem = {
   groupName?: string;

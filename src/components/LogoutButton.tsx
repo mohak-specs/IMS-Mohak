@@ -9,6 +9,7 @@ const LogoutButton = () => {
   const { user, destroy } = useUserStore();
 
   const handleLogout = () => {
+    localStorage.removeItem("token");
     setToken(null);
     destroy();
     navigate("/login", { replace: true });

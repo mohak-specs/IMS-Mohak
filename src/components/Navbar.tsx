@@ -2,7 +2,7 @@ import { Layout, Avatar, MenuProps, Typography, Dropdown } from "antd";
 import useUserStore from "../store/useUserStore";
 import { useShallow } from "zustand/react/shallow";
 import { useNavigate } from "react-router-dom";
-import LogoutButton from "./LoginButton";
+import LogoutButton from "./LogoutButton";
 
 const { Header } = Layout;
 

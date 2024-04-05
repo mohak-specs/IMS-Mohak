@@ -3,7 +3,7 @@ import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import axios from "axios";
 import {
   Login,
-  Dashboard,
+  Home,
   Brokers,
   Broker,
   BrokerEdit,
@@ -34,7 +34,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: <Dashboard />,
+          element: <Home />,
         },
         {
           path: "/broker",

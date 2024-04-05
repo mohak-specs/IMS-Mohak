@@ -1,6 +1,6 @@
 import Login from "./Login/Login";
 import NotFound from "./NotFound/NotFound";
-import Dashboard from "./Dashboard/Dashboard";
+import Home from "./Dashboard/Home";
 import Brokers from "./Brokers/Brokers";
 import Broker from "./Broker/Broker";
 import BrokerEdit from "./BrokerEdit/BrokerEdit";
@@ -18,7 +18,7 @@ import Profile from "./Profile/Profile";
 
 export {
     Login,
-    Dashboard,
+    Home,
     Brokers,
     Broker,
     BrokerEdit,
