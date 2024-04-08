@@ -1,4 +1,5 @@
 // API Types Start
+type MongoosePropsOmmited = "_id"|"id"|"createdAt"|"updatedAt"|"__v"
 interface IAddress {
   streetLine1?: String;
   streetLine2?: String;
@@ -52,7 +53,9 @@ interface IBroker extends IFirm {
   sectors?: String[];
   coverages?: String[] | ICoverage[];
 }
-
+type IBrokerPostType = Omit<IBroker,keyof MongoosePropsOmmited> & {
+  type: "broker"
+}
 interface IInvestor extends IFirm {
   firmType: "investor";
   sectors?: String[];
@@ -76,6 +79,10 @@ interface IFile {
   createdAt: Date;
   updatedAt: Date;
   tags?: String[];
+}
+
+type IInvestorPostType = Omit<IInvestor,keyof MongoosePropsOmmited> & {
+  type: "investor"
 }
 
 interface IMember {
@@ -102,7 +109,7 @@ interface IBrokerMember extends IMember {
   memberType: "BrokerMember";
   sectors?: String[];
 }
-
+type IBrokerMemberPostType = Omit<IBrokerMember,MongoosePropsOmmited>
 interface IInvestorMember extends IMember {
   memberType: "InvestorMember";
   sectors?: String[];
@@ -115,7 +122,7 @@ interface IInvestorMember extends IMember {
   holdingSize?: Number;
   lastHoldingDate?: Date;
 }
-
+type IInvestorMemberPostType = Omit<IInvestorMember,MongoosePropsOmmited>
 interface ICoverage {
   _id: String;
   id?: String;
@@ -130,6 +137,8 @@ interface ICoverage {
   __v?: Number;
 }
 
+type ICoveragePostType = Omit<ICoverage,MongoosePropsOmmited>
+
 interface IInteraction {
   _id: String;
   id?: String;
@@ -142,6 +151,14 @@ interface IInteraction {
   __v?: Number;
 }
 
+type IInteractionPostType = Omit<IInteraction,MongoosePropsOmmited>
+
+interface AxiosReturnType<T>{
+  data?: T;
+  success: "true" | "false";
+  message: String;
+}
+
 export type {
   IUser,
   IBroker,
@@ -151,4 +168,11 @@ export type {
   IFile,
   IInteraction,
   ICoverage,
+  IBrokerPostType,
+  IInvestorPostType,
+  IBrokerMemberPostType,
+  IInvestorMemberPostType,
+  IInteractionPostType,
+  ICoveragePostType,
+  AxiosReturnType
 };

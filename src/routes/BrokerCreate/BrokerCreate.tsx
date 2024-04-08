@@ -1,36 +1,58 @@
-import {
-  Typography,
-  Divider,
-  Row,
-  Col,
-  Form,
-  Input,
-  Select,
-  Button,
-} from "antd";
+import { Typography, Row, Col, Form, Input, Select, Button } from "antd";
 import { useMemo } from "react";
-import { country_arr, city_arr } from "../../lib/geoData";
+import { useMutation } from "@tanstack/react-query";
+import getCountryCodeByName from "../../lib/geoData";
+import { Country, State } from "country-state-city";
+import { createBroker } from "../../api/Broker";
+import { IBrokerPostType } from "../../types";
+import useLoadingStore from "../../store/useLoadingStore";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { isAxiosError } from "axios";
+import { queryClient } from "../../lib/react-query";
+import PageTitle from "../../components/PageTitle";
 const { Option } = Select;
 const { Title } = Typography;
 
 const BrokerCreate = () => {
+  const { setIsLoading } = useLoadingStore();
+  const navigate = useNavigate();
+  const mutation = useMutation({
+    mutationFn: createBroker,
+    onMutate: () => setIsLoading(true),
+    onSuccess: (data) => {
+      form.resetFields();
+      toast.success(`${data.message}`, { id: "createBroker" });
+      navigate("/broker");
+      setIsLoading(false);
+      queryClient.invalidateQueries({ queryKey: ["brokers"] });
+    },
+    onError: (error) => {
+      setIsLoading(false);
+      if (isAxiosError(error)) {
+        toast.error(error.response?.data.message);
+        return;
+      }
+      toast.error(error.message);
+    },
+  });
   const [form] = Form.useForm();
-  const selectedCountry: String = Form.useWatch("address.country", form);
-  const citiesByCountry = useMemo(() => {
-    const countryIndex = country_arr.findIndex((country) => {
-      return country === selectedCountry;
-    });
-    const cities = city_arr[countryIndex + 1]?.split("|");
-    return cities;
+  const selectedCountry: string = Form.useWatch("address.country", form);
+  const getCityByCountry = useMemo(() => {
+    const foundCountry = Country.getCountryByCode(
+      getCountryCodeByName(selectedCountry)
+    );
+    return foundCountry ? State.getStatesOfCountry(foundCountry.isoCode) : [];
   }, [selectedCountry]);
-  const handleSubmit = (values: any) => {
-    console.log(values);
-  };
   return (
     <>
-      <Title level={3}>Create Broker</Title>
-      <Divider style={{ margin: "0px" }} />
-      <Form form={form} style={{ marginTop: "8px" }} onFinish={handleSubmit}>
+      <PageTitle title="Create Broker" />
+      <Form
+        form={form}
+        onFinish={(values: IBrokerPostType) =>
+          mutation.mutate({ ...values, type: "broker" })
+        }
+      >
         <Title level={5}>Basic Information</Title>
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           <Col xs={24} sm={12}>
@@ -69,6 +91,8 @@ const BrokerCreate = () => {
               <Input.TextArea placeholder="Comment" rows={3} autoSize />
             </Form.Item>
           </Col>
+        </Row>
+        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           <Col xs={24} sm={12}>
             <Form.Item
               label="Sectors"
@@ -108,31 +132,32 @@ const BrokerCreate = () => {
                 allowClear
                 showSearch
                 virtual
-              >
-                {country_arr.map((country, i) => (
-                  <Option key={i} value={country}>
-                    {country}
-                  </Option>
-                ))}
-              </Select>
+                onChange={() => {
+                  form.setFieldValue("address.state", undefined);
+                }}
+                options={Country.getAllCountries().map((country) => ({
+                  label: country.name,
+                  value: country.name,
+                }))}
+              />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="City"
-              name="address.city"
+              label="State"
+              name="address.state"
               rules={[{ required: true, message: "Please select the city" }]}
               dependencies={["address.country"]}
             >
               <Select
-                placeholder="Select City"
+                placeholder="Select State"
                 allowClear
                 showSearch
-                disabled={Boolean(!selectedCountry)}
+                disabled={!form.getFieldValue("address.country")}
               >
-                {citiesByCountry?.map((city) => (
-                  <Option key={city} value={city}>
-                    {city}
+                {getCityByCountry.map((city) => (
+                  <Option key={city.name} value={city.name}>
+                    {city.name}
                   </Option>
                 ))}
               </Select>

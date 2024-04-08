@@ -1,4 +1,4 @@
-import { Empty, Button, Image, Space } from "antd";
+import { Empty, Button, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import NotFound from "../../assets/not-found.svg";
 
@@ -6,7 +6,7 @@ const App = () => {
   const navigate = useNavigate();
   return (
     <Empty
-      image={<Image src={NotFound} preview={false} />}
+      image={<img src={NotFound} alt="Not found" />}
       imageStyle={{ height: 280 }}
       description={<span></span>}
     >

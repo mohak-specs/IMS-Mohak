@@ -1,25 +1,41 @@
+import { Suspense } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { lazyImport } from "./utils/lazyImport";
+import { ErrorBoundary } from "react-error-boundary";
+import { HelmetProvider } from "react-helmet-async";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import axios from "axios";
-import {
-  Login,
-  Home,
-  Brokers,
-  Broker,
-  BrokerEdit,
-  BrokerCreate,
-  Investors,
-  Investor,
-  InvestorEdit,
-  InvestorCreate,
-  MoveFirm,
-  Members,
-  MemberEdit,
-  InteractionCreate,
-  InteractionEdit,
-  Profile,
-  NotFound,
-} from "./routes";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/react-query";
+import ErrorFallback from "./components/ErrorFallback";
+import Loader from "./components/Loader";
+// Lazy impprts
+const { Login } = lazyImport(() => import("./routes"), "Login");
+const { Home } = lazyImport(() => import("./routes"), "Home");
+const { Brokers } = lazyImport(() => import("./routes"), "Brokers");
+const { Broker } = lazyImport(() => import("./routes"), "Broker");
+const { BrokerEdit } = lazyImport(() => import("./routes"), "BrokerEdit");
+const { BrokerCreate } = lazyImport(() => import("./routes"), "BrokerCreate");
+const { Investors } = lazyImport(() => import("./routes"), "Investors");
+const { Investor } = lazyImport(() => import("./routes"), "Investor");
+const { InvestorEdit } = lazyImport(() => import("./routes"), "InvestorEdit");
+const { InvestorCreate } = lazyImport(
+  () => import("./routes"),
+  "InvestorCreate"
+);
+const { MoveFirm } = lazyImport(() => import("./routes"), "MoveFirm");
+const { Members } = lazyImport(() => import("./routes"), "Members");
+const { MemberEdit } = lazyImport(() => import("./routes"), "MemberEdit");
+const { InteractionCreate } = lazyImport(
+  () => import("./routes"),
+  "InteractionCreate"
+);
+const { InteractionEdit } = lazyImport(
+  () => import("./routes"),
+  "InteractionEdit"
+);
+const { Profile } = lazyImport(() => import("./routes"), "Profile");
+const { NotFound } = lazyImport(() => import("./routes"), "NotFound");
 
 function App() {
   axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -103,7 +119,17 @@ function App() {
       ],
     },
   ]);
-  return <RouterProvider router={router} />;
+  return (
+    <Suspense fallback={<Loader isLoading={true} />}>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <HelmetProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </HelmetProvider>
+      </ErrorBoundary>
+    </Suspense>
+  );
 }
 
 export default App;
