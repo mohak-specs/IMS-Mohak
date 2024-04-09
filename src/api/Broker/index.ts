@@ -1,9 +1,9 @@
 import axios from "axios";
 import { IBroker, IBrokerPostType, AxiosReturnType } from "../../types";
 
-export const getBrokers = async () => {
+export const getBrokers = async (by: string) => {
     try{
-        const { data:brokers } = await axios.get<AxiosReturnType<IBroker[]>>('firms?firmType=broker');
+        const { data:brokers } = await axios.get<AxiosReturnType<IBroker[]>>(`firms?firmType=broker&${by}`);
         return brokers;
     }catch(err){
         throw err;

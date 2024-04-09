@@ -33,7 +33,7 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
         onCollapse={toggleCollapsed}
         style={{
           position: "fixed",
-          zIndex: 2,
+          zIndex: 10,
           height: "100%",
           boxShadow: collapsed ? "none" : "4px 0 4px rgba(0, 0, 0, 0.1)",
         }}
@@ -58,6 +58,7 @@ const HomeLayout = ({ children }: { children: React.ReactNode }) => {
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
               boxShadow,
+              marginBottom: 12,
             }}
           >
             {children}

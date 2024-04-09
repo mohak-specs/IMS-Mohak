@@ -2,6 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../providers/AuthProvider";
 import useLoadingStore from "../../store/useLoadingStore";
 import { useShallow } from "zustand/react/shallow";
+import AddFloatButton from "../../components/AddFloatButton";
 import HomeLayout from "../../components/HomeLayout";
 import Loader from "../../components/Loader";
 
@@ -27,6 +28,7 @@ const ProtectedRoute = () => {
       <HomeLayout>
         <Outlet />
       </HomeLayout>
+      <AddFloatButton />
     </>
   );
 };

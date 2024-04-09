@@ -4,7 +4,7 @@ interface IAddress {
   streetLine1?: String;
   streetLine2?: String;
   city: String;
-  region: String;
+  locality: String;
   country: String;
   postalCode: String;
 }
@@ -14,7 +14,7 @@ interface IContactNumber {
 }
 interface IFirmHistory {
   firm: String | IBroker | IInvestor;
-  dateOfJoining: Date;
+  dateOfJoining: String;
 }
 interface IUser {
   _id: String;
@@ -26,10 +26,10 @@ interface IUser {
   uniquePasswordToken?: String;
   isPasswordOTPVerified?: boolean;
   passwordResetToken?: String;
-  passwordResetTokenExpiry?: Date;
+  passwordResetTokenExpiry?: String;
   avatar: String;
-  createdAt?: Date;
-  updatedAt?: Date;
+  createdAt?: String;
+  updatedAt?: String;
   __v?: Number;
 }
 
@@ -43,8 +43,8 @@ interface IFirm {
   createdBy: String | IUser;
   members?: String[] | IBrokerMember[] | IInvestorMember[];
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: String;
+  updatedAt: String;
   __v?: Number;
 }
 
@@ -76,8 +76,8 @@ interface IFile {
   originalName: String;
   mimeType: String;
   buffer?: Buffer;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: String;
+  updatedAt: String;
   tags?: String[];
 }
 
@@ -100,8 +100,8 @@ interface IMember {
   comment?: String;
   interactions?: String[] | IInteraction[];
   isGift: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: String;
+  updatedAt: String;
   __v?: Number;
 }
 
@@ -120,7 +120,7 @@ interface IInvestorMember extends IMember {
   };
   isExistingInvestor: boolean;
   holdingSize?: Number;
-  lastHoldingDate?: Date;
+  lastHoldingDate?: String;
 }
 type IInvestorMemberPostType = Omit<IInvestorMember,MongoosePropsOmmited>
 interface ICoverage {
@@ -131,9 +131,9 @@ interface ICoverage {
   coverageFile: String | IFile;
   fiscalYear: Number;
   quarter: 1 | 2 | 3 | 4;
-  coverageDate: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  coverageDate: String;
+  createdAt: String;
+  updatedAt: String;
   __v?: Number;
 }
 
@@ -145,9 +145,9 @@ interface IInteraction {
   firm: String | IBroker | IInvestor;
   member: String | IBrokerMember | IInvestorMember;
   content: String;
-  dateOfInteraction: Date;
-  createdAt: Date;
-  updatedAt: Date;
+  dateOfInteraction: String;
+  createdAt: String;
+  updatedAt: String;
   __v?: Number;
 }
 
@@ -159,6 +159,14 @@ interface AxiosReturnType<T>{
   message: String;
 }
 
+// Search Types
+interface ISearchBroker{
+  name?:String;
+  locationType?: "Domestic" | "Foreign";
+  sectors?: String[];
+  localities?: String[];
+  isActive?: string;
+}
 export type {
   IUser,
   IBroker,
@@ -174,5 +182,6 @@ export type {
   IInvestorMemberPostType,
   IInteractionPostType,
   ICoveragePostType,
-  AxiosReturnType
+  AxiosReturnType,
+  ISearchBroker
 };

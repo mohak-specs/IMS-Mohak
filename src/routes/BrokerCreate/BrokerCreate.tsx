@@ -167,11 +167,11 @@ const BrokerCreate = () => {
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
           <Col xs={24} sm={12}>
             <Form.Item
-              label="Region"
-              name="address.region"
-              rules={[{ required: true, message: "Please input the region" }]}
+              label="Locality"
+              name="address.locality"
+              rules={[{ required: true, message: "Please input the locality" }]}
             >
-              <Input type="text" placeholder="Region" />
+              <Input type="text" placeholder="Locality" />
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
@@ -190,9 +190,18 @@ const BrokerCreate = () => {
             </Form.Item>
           </Col>
         </Row>
-        <Button type="primary" htmlType="submit">
-          Add Broker
-        </Button>
+        <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
+          <Col>
+            <Button type="primary" htmlType="submit">
+              Add Broker
+            </Button>
+          </Col>
+          <Col>
+            <Button htmlType="reset" type="default">
+              Reset
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </>
   );

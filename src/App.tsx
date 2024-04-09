@@ -25,6 +25,8 @@ const { InvestorCreate } = lazyImport(
 );
 const { MoveFirm } = lazyImport(() => import("./routes"), "MoveFirm");
 const { Members } = lazyImport(() => import("./routes"), "Members");
+const { Member } = lazyImport(() => import("./routes"), "Member");
+const { MemberCreate } = lazyImport(() => import("./routes"), "MemberCreate");
 const { MemberEdit } = lazyImport(() => import("./routes"), "MemberEdit");
 const { InteractionCreate } = lazyImport(
   () => import("./routes"),
@@ -94,7 +96,11 @@ function App() {
         },
         {
           path: "/member/:id",
-          element: <MemberEdit />,
+          element: <Member />,
+        },
+        {
+          path: "/member/create",
+          element: <MemberCreate />,
         },
         {
           path: "/member/:id/edit",
