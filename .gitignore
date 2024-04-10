@@ -25,3 +25,6 @@ dist-ssr
 
 # Enviornment variables
 *.env
+
+# Faker data folder
+src/faker

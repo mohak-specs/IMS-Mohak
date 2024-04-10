@@ -52,6 +52,7 @@ const BrokerCreate = () => {
         onFinish={(values: IBrokerPostType) =>
           mutation.mutate({ ...values, type: "broker" })
         }
+        size="middle"
       >
         <Title level={5}>Basic Information</Title>
         <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>

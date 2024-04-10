@@ -3,13 +3,13 @@ type MongoosePropsOmmited = "_id"|"id"|"createdAt"|"updatedAt"|"__v"
 interface IAddress {
   streetLine1?: String;
   streetLine2?: String;
-  city: String;
+  state: String;
   locality: String;
   country: String;
   postalCode: String;
 }
 interface IContactNumber {
-  countryCode?: String;
+  dialCode?: String;
   number: String;
 }
 interface IFirmHistory {
@@ -128,9 +128,9 @@ interface ICoverage {
   id?: String;
   firm: String | IBroker | IInvestor;
   takeProfit: Number;
-  coverageFile: String | IFile;
+  coverageFile: IFile | String; 
   fiscalYear: Number;
-  quarter: 1 | 2 | 3 | 4;
+  quarter: Number;
   coverageDate: String;
   createdAt: String;
   updatedAt: String;
@@ -168,6 +168,7 @@ interface ISearchBroker{
   isActive?: string;
 }
 export type {
+  IAddress,
   IUser,
   IBroker,
   IMember,
