@@ -12,7 +12,7 @@ const PageTitle = ({
   const navigate = useNavigate();
   return (
     <>
-      <Space align="start">
+      <Space align="baseline">
         {isOnBack && (
           <Tooltip title="Back">
             <Button
